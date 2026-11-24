@@ -1,0 +1,69 @@
+.login-mask {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    background: rgba(28, 20, 24, 0.45);
+}
+
+.login-panel {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 56rpx 48rpx 64rpx;
+    border-radius: 36rpx 36rpx 0 0;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-badge {
+    display: flex;
+    width: 96rpx;
+    height: 96rpx;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #ffe9ed;
+    color: #e05a73;
+    font-size: 32rpx;
+    font-weight: 600;
+}
+
+.login-title {
+    margin-top: 28rpx;
+    font-size: 38rpx;
+    font-weight: 600;
+}
+
+.login-desc {
+    margin-top: 16rpx;
+    color: #8a8f99;
+    font-size: 26rpx;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.login-button {
+    width: 100%;
+    height: 92rpx;
+    margin-top: 44rpx;
+    border-radius: 46rpx;
+    background: #e05a73;
+    color: #ffffff;
+    font-size: 30rpx;
+    font-weight: 600;
+    text-align: center;
+    line-height: 92rpx;
+}
+
+.login-cancel {
+    margin-top: 24rpx;
+    color: #8a8f99;
+    font-size: 26rpx;
+    padding: 12rpx 32rpx;
+}

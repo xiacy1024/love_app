@@ -1,0 +1,15 @@
+<view class="gender-mask" wx:if="{{show}}" catchtap="close">
+    <view class="gender-panel" catchtap="noop">
+        <view class="gender-badge">遇见</view>
+        <text class="gender-title">{{required ? '先选一下想看谁' : '切换想看的性别'}}</text>
+        <text class="gender-desc">我们会按你的选择推荐对应性别的人，之后随时可以改。</text>
+        <view class="gender-options">
+            <view class="gender-option {{selected === item.value ? 'gender-option-active' : ''}}" wx:for="{{options}}" wx:key="value" data-value="{{item.value}}" bindtap="choose">
+                <text class="option-glyph">{{item.glyph}}</text>
+                <text class="option-label">{{item.label}}</text>
+                <text class="option-desc">{{item.desc}}</text>
+            </view>
+        </view>
+        <view wx:if="{{!required}}" class="gender-cancel" bindtap="close">取消</view>
+    </view>
+</view>

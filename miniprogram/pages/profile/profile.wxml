@@ -1,0 +1,103 @@
+<view class="page">
+    <view class="page-head">
+        <text class="page-title">我的资料</text>
+        <text class="page-sub">资料越完整，推荐越精准</text>
+    </view>
+
+    <view class="guest-card" wx:if="{{!loggedIn}}">
+        <view class="guest-icon">♡</view>
+        <text class="guest-title">登录后填写资料</text>
+        <text class="guest-desc">游客可以浏览推荐；填写资料、点赞和点踩需要先登录。</text>
+        <view class="guest-button" bindtap="openLogin">登录并开始填写</view>
+    </view>
+
+    <block wx:else>
+        <view class="form-card">
+            <view class="photo-row" bindtap="chooseImage">
+                <view class="photo-box">
+                    <image wx:if="{{form.image_url}}" class="photo-preview" src="{{form.image_url}}" mode="aspectFill"></image>
+                    <text wx:else class="photo-plus">＋</text>
+                </view>
+                <view class="photo-tip">
+                    <text class="photo-title">个人照片</text>
+                    <text class="photo-sub">{{form.image_url ? '点击更换照片' : '点击上传照片'}}</text>
+                </view>
+                <text class="row-arrow">›</text>
+            </view>
+
+            <view class="field-row">
+                <text class="field-label">昵称</text>
+                <input class="field-input" value="{{form.name}}" data-field="name" bindinput="onFieldInput" placeholder="怎么称呼你" />
+            </view>
+
+            <picker mode="selector" range="{{genderOptions}}" range-key="text" value="{{genderIndex}}" data-type="gender" bindchange="onPickerChange">
+                <view class="field-row">
+                    <text class="field-label">性别</text>
+                    <text class="field-value">{{genderText}}</text>
+                    <text class="row-arrow">›</text>
+                </view>
+            </picker>
+
+            <picker mode="date" value="{{form.bithday}}" end="{{maxDate}}" data-field="bithday" bindchange="onDateChange">
+                <view class="field-row">
+                    <text class="field-label">生日</text>
+                    <text class="field-value {{form.bithday ? '' : 'field-placeholder'}}">{{form.bithday || '请选择'}}</text>
+                    <text class="row-arrow">›</text>
+                </view>
+            </picker>
+
+            <view class="field-row">
+                <text class="field-label">身高</text>
+                <input class="field-input" type="number" value="{{form.height}}" data-field="height" bindinput="onFieldInput" placeholder="例如 178" />
+                <text class="unit">cm</text>
+            </view>
+
+            <view class="field-row">
+                <text class="field-label">所在城市</text>
+                <input class="field-input" value="{{form.current_city}}" data-field="current_city" bindinput="onFieldInput" placeholder="例如 合肥" />
+            </view>
+
+            <picker mode="selector" range="{{educationOptions}}" range-key="text" value="{{educationIndex}}" data-type="education" bindchange="onPickerChange">
+                <view class="field-row">
+                    <text class="field-label">学历</text>
+                    <text class="field-value">{{educationText}}</text>
+                    <text class="row-arrow">›</text>
+                </view>
+            </picker>
+
+            <picker mode="selector" range="{{incomeOptions}}" range-key="text" value="{{incomeIndex}}" data-type="income" bindchange="onPickerChange">
+                <view class="field-row">
+                    <text class="field-label">收入</text>
+                    <text class="field-value">{{incomeText}}</text>
+                    <text class="row-arrow">›</text>
+                </view>
+            </picker>
+
+            <view class="field-row">
+                <text class="field-label">职业</text>
+                <input class="field-input" value="{{form.job}}" data-field="job" bindinput="onFieldInput" placeholder="你的工作" />
+            </view>
+
+            <view class="field-row">
+                <text class="field-label">毕业院校</text>
+                <input class="field-input" value="{{form.school}}" data-field="school" bindinput="onFieldInput" placeholder="学校名称" />
+            </view>
+
+            <view class="field-row vip-row">
+                <text class="field-label">VIP 标识</text>
+                <switch checked="{{vipChecked}}" bindchange="onVipChange" color="#e05a73" />
+            </view>
+
+            <view class="intro-row">
+                <text class="field-label">自我介绍</text>
+                <textarea class="field-textarea" value="{{form.self_intro}}" data-field="self_intro" bindinput="onFieldInput" placeholder="说说你的爱好和期待" maxlength="200" auto-height></textarea>
+            </view>
+        </view>
+
+        <view class="error-text" wx:if="{{errorText}}">{{errorText}}</view>
+        <view class="save-button {{saving ? 'save-disabled' : ''}}" bindtap="saveProfile">{{saving ? '保存中…' : '保存资料'}}</view>
+        <view class="footer-note">推荐分数由后端计算，无需在这里填写</view>
+    </block>
+
+    <login-sheet show="{{showLogin}}" bind:login="handleLogin" bind:close="closeLogin"></login-sheet>
+</view>

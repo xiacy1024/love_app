@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "pages/recommend/recommend",
+    "pages/profile/profile"
+  ],
+  "window": {
+    "navigationBarTitleText": "遇见",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#fff6f7",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#8a8f99",
+    "selectedColor": "#e05a73",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/recommend/recommend",
+        "text": "推荐"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
