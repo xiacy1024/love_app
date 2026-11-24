@@ -76,7 +76,7 @@
                     </view>
                     <view class="info-item">
                         <text class="info-label">生日</text>
-                        <text class="info-value">{{current.bithday}}</text>
+                        <text class="info-value">{{current.birthday}}</text>
                     </view>
                     <view class="info-item info-item-wide">
                         <text class="info-label">职业</text>

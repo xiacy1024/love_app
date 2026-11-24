@@ -20,9 +20,9 @@ const INCOME_TEXT = {
     5: '50k 以上'
 };
 
-function calcAge(bithday) {
-    if (!bithday) return -1;
-    const parts = bithday.split('-');
+function calcAge(birthday) {
+    if (!birthday) return -1;
+    const parts = birthday.split('-');
     if (parts.length < 3) return -1;
     const year = Number(parts[0]);
     if (!year) return -1;
@@ -37,10 +37,10 @@ function calcAge(bithday) {
 }
 
 function decorate(raw) {
-    const age = calcAge(raw.bithday);
+    const age = calcAge(raw.birthday);
     return Object.assign({}, raw, {
         ageText: age >= 0 ? age + ' 岁' : '保密',
-        genderText: raw.gender === 2 ? '男' : (raw.gender === 1 ? '女' : '保密'),
+        genderText: raw.gender === 1 ? '男' : (raw.gender === 2 ? '女' : '保密'),
         educationText: EDUCATION_TEXT[raw.education] || '未填写',
         incomeText: INCOME_TEXT[String(raw.income)] || '未填写',
         isVip: !!raw.vip && raw.vip !== '0',

@@ -26,7 +26,7 @@
             </view>
 
             <view class="field-row">
-                <text class="field-label">昵称</text>
+                <text class="field-label">名字</text>
                 <input class="field-input" value="{{form.name}}" data-field="name" bindinput="onFieldInput" placeholder="怎么称呼你" />
             </view>
 
@@ -38,10 +38,10 @@
                 </view>
             </picker>
 
-            <picker mode="date" value="{{form.bithday}}" end="{{maxDate}}" data-field="bithday" bindchange="onDateChange">
+            <picker mode="date" value="{{form.birthday}}" end="{{maxDate}}" data-field="birthday" bindchange="onDateChange">
                 <view class="field-row">
                     <text class="field-label">生日</text>
-                    <text class="field-value {{form.bithday ? '' : 'field-placeholder'}}">{{form.bithday || '请选择'}}</text>
+                    <text class="field-value {{form.birthday ? '' : 'field-placeholder'}}">{{form.birthday || '请选择'}}</text>
                     <text class="row-arrow">›</text>
                 </view>
             </picker>
@@ -83,11 +83,6 @@
                 <input class="field-input" value="{{form.school}}" data-field="school" bindinput="onFieldInput" placeholder="学校名称" />
             </view>
 
-            <view class="field-row vip-row">
-                <text class="field-label">VIP 标识</text>
-                <switch checked="{{vipChecked}}" bindchange="onVipChange" color="#e05a73" />
-            </view>
-
             <view class="intro-row">
                 <text class="field-label">自我介绍</text>
                 <textarea class="field-textarea" value="{{form.self_intro}}" data-field="self_intro" bindinput="onFieldInput" placeholder="说说你的爱好和期待" maxlength="200" auto-height></textarea>
@@ -96,7 +91,6 @@
 
         <view class="error-text" wx:if="{{errorText}}">{{errorText}}</view>
         <view class="save-button {{saving ? 'save-disabled' : ''}}" bindtap="saveProfile">{{saving ? '保存中…' : '保存资料'}}</view>
-        <view class="footer-note">推荐分数由后端计算，无需在这里填写</view>
     </block>
 
     <login-sheet show="{{showLogin}}" bind:login="handleLogin" bind:close="closeLogin"></login-sheet>

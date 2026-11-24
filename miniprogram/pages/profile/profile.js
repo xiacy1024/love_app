@@ -17,27 +17,27 @@ const EDUCATIONS = [
 ];
 
 const INCOMES = [
-    { value: '1', text: '5k 以下' },
-    { value: '2', text: '5k-10k' },
-    { value: '3', text: '10k-20k' },
-    { value: '4', text: '20k-50k' },
-    { value: '5', text: '50k 以上' }
+    { value: 1, text: '5k 以下' },
+    { value: 2, text: '5k-10k' },
+    { value: 3, text: '10k-20k' },
+    { value: 4, text: '20k-50k' },
+    { value: 5, text: '50k 以上' }
 ];
 
 function emptyForm() {
     return {
+        user_id: wx.getStorageSync("user_id"),
         image_url: '',
         name: '',
-        bithday: '',
+        birthday: '2000-01-01',
         current_city: '',
-        education: 3,
-        gender: 2,
+        education: '',
+        gender: 1,
         height: '',
-        income: '4',
+        income: 0,
         job: '',
         school: '',
         self_intro: '',
-        vip: ''
     };
 }
 
@@ -64,8 +64,8 @@ const pageOptions = {
         educationOptions: EDUCATIONS,
         incomeOptions: INCOMES,
         genderIndex: 0,
-        educationIndex: 2,
-        incomeIndex: 3,
+        educationIndex: 0,
+        incomeIndex: 0,
         genderText: '男',
         educationText: '本科',
         incomeText: '20k-50k',
@@ -134,7 +134,7 @@ const pageOptions = {
     },
 
     onDateChange: function (event) {
-        this.setField('bithday', event.detail.value);
+        this.setField('birthday', event.detail.value);
     },
 
     onPickerChange: function (event) {
@@ -190,15 +190,7 @@ const pageOptions = {
         if (this.data.saving) return;
         const form = this.data.form;
         if (!form.name || !form.name.trim()) {
-            this.setData({ errorText: '请填写昵称' });
-            return;
-        }
-        if (!form.bithday) {
-            this.setData({ errorText: '请选择生日' });
-            return;
-        }
-        if (!form.current_city || !form.current_city.trim()) {
-            this.setData({ errorText: '请填写所在城市' });
+            this.setData({ errorText: '请填写名字' });
             return;
         }
         const self = this;

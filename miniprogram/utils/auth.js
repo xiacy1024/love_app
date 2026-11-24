@@ -17,6 +17,7 @@ function exchange(code) {
             throw new Error('登录接口未返回 user_id');
         }
         wx.setStorageSync(USER_ID_KEY, userId);
+        wx.setStorageSync("profile", data)
         return data;
     });
 }
