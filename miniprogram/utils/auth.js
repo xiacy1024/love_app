@@ -1,18 +1,22 @@
 const api = require('./api');
 
-const TOKEN_KEY = 'auth_token';
+const USER_ID_KEY = 'user_id';
+
+function getUserId() {
+    return wx.getStorageSync(USER_ID_KEY);
+}
 
 function isLoggedIn() {
-    return !!wx.getStorageSync(TOKEN_KEY);
+    return !!getUserId();
 }
 
 function exchange(code) {
     return api.login(code).then(function (data) {
-        const token = data && (data.token || data.accessToken);
-        if (!token) {
-            throw new Error('登录接口未返回 token');
+        const userId = data && data.user_id;
+        if (userId === undefined || userId === null || userId === '') {
+            throw new Error('登录接口未返回 user_id');
         }
-        wx.setStorageSync(TOKEN_KEY, token);
+        wx.setStorageSync(USER_ID_KEY, userId);
         return data;
     });
 }
@@ -44,12 +48,13 @@ function login() {
 }
 
 function logout() {
-    wx.removeStorageSync(TOKEN_KEY);
+    wx.removeStorageSync(USER_ID_KEY);
 }
 
 module.exports = {
     isLoggedIn: isLoggedIn,
     login: login,
     logout: logout,
-    TOKEN_KEY: TOKEN_KEY
+    getUserId: getUserId,
+    USER_ID_KEY: USER_ID_KEY
 };

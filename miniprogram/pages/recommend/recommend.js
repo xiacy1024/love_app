@@ -1,6 +1,8 @@
 const api = require('../../utils/api');
 const auth = require('../../utils/auth');
 const preference = require('../../utils/preference');
+const loginBehavior = require('../../utils/login-behavior');
+const tabBar = require('../../utils/tab-bar');
 
 const EDUCATION_TEXT = {
     1: '高中及以下',
@@ -47,7 +49,7 @@ function decorate(raw) {
     });
 }
 
-Page({
+const pageOptions = {
     data: {
         viewState: 'loading',
         list: [],
@@ -97,8 +99,9 @@ Page({
     },
 
     onShow: function () {
-        // 从资料页返回时刷新登录态展示
-        this.setData({ loggedIn: auth.isLoggedIn() });
+        // 从资料页返回时刷新登录态展示，并同步 user_id 供后续调用
+        this.setData({ loggedIn: auth.isLoggedIn(), userId: auth.getUserId() });
+        tabBar.sync(this, 0);
     },
 
     loadList: function () {
@@ -172,22 +175,14 @@ Page({
         this.setData({ showLogin: true });
     },
 
-    handleLogin: function () {
-        const self = this;
-        auth.login().then(function () {
-            self.setData({ showLogin: false, loggedIn: true });
-            wx.showToast({ title: '登录成功', icon: 'success' });
-            const pending = self.pendingAction;
-            self.pendingAction = null;
-            if (pending) pending();
-        }).catch(function () {
-            wx.showToast({ title: '登录失败，请重试', icon: 'none' });
-        });
+    afterLogin: function () {
+        const pending = this.pendingAction;
+        this.pendingAction = null;
+        if (pending) pending();
     },
 
-    closeLogin: function () {
+    afterCloseLogin: function () {
         this.pendingAction = null;
-        this.setData({ showLogin: false });
     },
 
     handleLike: function () {
@@ -211,4 +206,6 @@ Page({
             });
         });
     }
-});
+};
+
+Page(Object.assign({}, loginBehavior, pageOptions));

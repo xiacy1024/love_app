@@ -3,7 +3,7 @@
         <view class="login-badge">遇见</view>
         <text class="login-title">登录后继续</text>
         <text class="login-desc">游客可以自由浏览推荐，点赞、点踩和填写资料需要先登录。</text>
-        <view class="login-button" bindtap="handleLogin">微信一键登录</view>
+        <view class="login-button" bindtap="onLoginTap">微信一键登录</view>
         <view class="login-cancel" bindtap="handleClose">再逛逛</view>
     </view>
 </view>

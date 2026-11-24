@@ -7,7 +7,7 @@
 //   recommend -> GET /get_user_info?gender=2（男）或 ?gender=1（女），返回候选人数组
 //                性别由 utils/preference.js 中用户选择的「想看的性别」决定，游客无需登录即可选择
 //   reaction  -> { id, action: 'like' | 'dislike' }
-//   login     -> { code } -> { token }
+//   login     -> { code } -> { user_id }（登录成功后 user_id 存到本地，并 setData 到页面供后续调用）
 //   profile   -> 当前用户资料
 //   upload    -> multipart 文件上传，字段名 file，返回 { url }
 
@@ -18,12 +18,12 @@ const API_BASE_URL = 'http://192.168.50.23:8000/api';
 const ENDPOINTS = {
     recommend: '/get_user_info',
     reaction: '/recommend/reaction',
-    login: '/auth/login',
+    login: '/wechat/login',
     profile: '/profile',
     upload: '/upload'
 };
 
-const TOKEN_KEY = 'auth_token';
+const USER_ID_KEY = 'user_id';
 const PROFILE_KEY = 'mock_my_profile';
 
 const MOCK_CANDIDATES = [
@@ -135,11 +135,6 @@ function wait(ms) {
     });
 }
 
-function authHeader() {
-    const token = wx.getStorageSync(TOKEN_KEY);
-    return token ? { Authorization: 'Bearer ' + token } : {};
-}
-
 function requestJson(path, method, data, mockValue) {
     if (!API_BASE_URL) {
         return wait(320).then(function () {
@@ -151,7 +146,7 @@ function requestJson(path, method, data, mockValue) {
             url: API_BASE_URL + path,
             method: method,
             data: data || {},
-            header: Object.assign({ 'content-type': 'application/json' }, authHeader()),
+            header: { 'content-type': 'application/json' },
             success: function (res) {
                 if (res.statusCode >= 200 && res.statusCode < 300) {
                     resolve(res.data);
@@ -182,7 +177,7 @@ module.exports = {
 
     login: function (code) {
         return requestJson(ENDPOINTS.login, 'POST', { code: code }, {
-            token: 'mock-token-' + Date.now()
+            user_id: 10001
         });
     },
 
@@ -216,7 +211,6 @@ module.exports = {
                 url: API_BASE_URL + ENDPOINTS.upload,
                 filePath: filePath,
                 name: 'file',
-                header: authHeader(),
                 success: function (res) {
                     try {
                         resolve(JSON.parse(res.data));

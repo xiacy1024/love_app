@@ -6,7 +6,7 @@ Component({
         }
     },
     methods: {
-        handleLogin: function () {
+        onLoginTap: function () {
             this.triggerEvent('login');
         },
         handleClose: function () {

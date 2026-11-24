@@ -1,0 +1,12 @@
+<view class="tab-bar">
+    <view wx:if="{{loggedIn}}" class="login-strip">
+        <view class="login-dot"></view>
+        <text class="login-text">已登录</text>
+        <view class="logout-button" bindtap="onLogout">退出</view>
+    </view>
+    <view class="tab-items">
+        <view wx:for="{{list}}" wx:key="pagePath" class="tab-item {{selected === index ? 'tab-active' : ''}}" data-path="{{item.pagePath}}" bindtap="onTabTap">
+            <text class="tab-label">{{item.text}}</text>
+        </view>
+    </view>
+</view>

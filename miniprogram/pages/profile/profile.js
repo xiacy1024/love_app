@@ -1,5 +1,7 @@
 const api = require('../../utils/api');
 const auth = require('../../utils/auth');
+const loginBehavior = require('../../utils/login-behavior');
+const tabBar = require('../../utils/tab-bar');
 
 const GENDERS = [
     { value: 2, text: '男' },
@@ -53,7 +55,7 @@ function todayString() {
     return d.getFullYear() + '-' + month + '-' + day;
 }
 
-Page({
+const pageOptions = {
     data: {
         loggedIn: false,
         showLogin: false,
@@ -76,11 +78,12 @@ Page({
 
     onShow: function () {
         this.refreshAuth();
+        tabBar.sync(this, 1);
     },
 
     refreshAuth: function () {
         const loggedIn = auth.isLoggedIn();
-        this.setData({ loggedIn: loggedIn });
+        this.setData({ loggedIn: loggedIn, userId: auth.getUserId() });
         if (loggedIn) {
             if (!this.data.profileLoaded) this.loadProfile();
         } else {
@@ -111,19 +114,11 @@ Page({
         this.setData({ showLogin: true });
     },
 
-    handleLogin: function () {
-        const self = this;
-        auth.login().then(function () {
-            self.setData({ showLogin: false, loggedIn: true });
-            wx.showToast({ title: '登录成功', icon: 'success' });
-            self.loadProfile();
-        }).catch(function () {
-            wx.showToast({ title: '登录失败，请重试', icon: 'none' });
-        });
+    afterLogin: function () {
+        this.loadProfile();
     },
 
-    closeLogin: function () {
-        this.setData({ showLogin: false });
+    afterCloseLogin: function () {
         wx.switchTab({ url: '/pages/recommend/recommend' });
     },
 
@@ -219,4 +214,6 @@ Page({
             wx.showToast({ title: '保存失败，请重试', icon: 'none' });
         });
     }
-});
+};
+
+Page(Object.assign({}, loginBehavior, pageOptions));
