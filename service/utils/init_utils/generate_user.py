@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-随机生成 user_info 表测试数据：2000 条男（gender=1）+ 2000 条女（gender=2），共 4000 行，输出 CSV。
+随机生成 user_profile 表测试数据：2000 条男（gender=1）+ 2000 条女（gender=2），共 4000 行，输出 CSV。
 
 字段顺序严格对齐建表语句：
     id, gender, name, birthday, height, education, school, job,
@@ -15,8 +15,6 @@
   image_url / self_intro / vip）按不同比例随机留空。
 - education、gender、income 都按注释里的数字编码存：education 1~5，income 1~4（TEXT 列存 '1'~'4'）。
 
-依赖：pandas（随机逻辑只用标准库 random / datetime，pandas 仅用于建表与写 CSV）
-运行：python3 gen_user_info_csv.py
 """
 
 import itertools
@@ -353,14 +351,6 @@ def generate_name_list(gender):
             tries += 1
 
         return surname + given
-        return {
-            "name": surname + given,
-            "surname": surname,
-            "given_name": given,
-            "gender": gender,
-            "gender_cn": "男" if gender == "male" else "女",
-            "name_length": len(surname + given),
-        }
 
     def generate(count, gender="mixed", seed=None, unique=True):
         """生成 count 条姓名记录；unique=True 时自动跳过重名。"""
@@ -380,7 +370,7 @@ def generate_name_list(gender):
         return results
     return generate(2000, gender)
 
-def generate_user_info(user_info_path):
+def generate_user_profile(user_profile_path):
     random.seed(SEED)
 
     # male_names = build_nicknames(MALE_PREFIX, MALE_SUFFIX, MALE_N)
@@ -413,10 +403,10 @@ def generate_user_info(user_info_path):
     if ADD_AGE_COLUMN:
         df["age"] = age
 
-    df.to_csv(user_info_path, index=False, encoding="utf-8-sig", na_rep="")   # utf-8-sig：Excel 打开不乱码
+    df.to_csv(user_profile_path, index=False, encoding="utf-8-sig", na_rep="")   # utf-8-sig：Excel 打开不乱码
 
     # ------------------- 自检 -------------------
-    print(f"已生成 {len(df)} 行 -> {user_info_path}")
+    print(f"已生成 {len(df)} 行 -> {user_profile_path}")
     print(f"男女分布：男 {int((df.gender == 1).sum())} / 女 {int((df.gender == 2).sum())}")
     print(f"周岁区间：{age.min()} ~ {age.max()}（要求 18~35）")
     assert age.min() >= MIN_AGE and age.max() <= MAX_AGE, "年龄越界"

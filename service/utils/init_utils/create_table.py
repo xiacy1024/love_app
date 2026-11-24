@@ -2,16 +2,16 @@
 from utils.db_utils import execute_sql
 
 create_user_sql = """
-    CREATE TABLE IF NOT EXISTS user_info(
+    CREATE TABLE IF NOT EXISTS user_profile(
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
         gender        INTEGER NOT NULL default 1,  -- 1 男 2 女
         name          TEXT,
-        bithday       TEXT    NOT NULL default '2000-01-01',
+        birthday       TEXT    NOT NULL default '2000-01-01',
         height        INTEGER,
         education     INTEGER,    -- 1 高中以下  2 大专  3 本科  4 硕士  5 博士
         school        text,     
         job           text,
-        income        text,       -- 1 5000以下   2 5000-1万  3 1万-3万 4 3万-10万  5 10万以上
+        income        INTEGER,    -- 1 5k 以下   2 5k-10k  3 10k-20k 4 20k-50k  5 50k 以上
         current_city  text,
         image_url     text,
         self_intro    text,

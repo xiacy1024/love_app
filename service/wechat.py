@@ -34,14 +34,14 @@ def code_to_openid(code: str) -> dict:
     select_sql = f""" select user_id from auth_wechat where open_id = '{openid}' """
     result = execute_sql(select_sql)
     if len(result) == 0:
-        insert_user_sql = """ INSERT INTO user_info (name) VALUES (null)"""
+        insert_user_sql = """ INSERT INTO user_profile (name) VALUES (null)"""
         user_id = insert_data_by_sql(insert_user_sql)
         insert_auth_sql = f""" INSERT INTO auth_wechat (open_id, user_id) values('{openid}', {user_id}) """
         insert_data_by_sql(insert_auth_sql)
+        return { "user_id": user_id }
     else:
-        user_id = result[0]["user_id"]
+        return dict(result[0])
 
-    return user_id
 
 @wechat_bp.route('/login', methods=['POST'])
 def login():
@@ -50,8 +50,7 @@ def login():
         return jsonify({"error": "缺少 code 参数"}), 400
 
     try:
-        user_id = code_to_openid(body["code"])
-        return jsonify({"user_id": user_id})
+        return jsonify(code_to_openid(body["code"]))
     except ValueError as e:
         return jsonify({"error": str(e)}), 401
     except requests.RequestException:
