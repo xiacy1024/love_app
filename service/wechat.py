@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 import requests
-from utils.db_utils import execute_sql, insert_data_by_sql
+from utils.db_utils import execute_sql, insert_data_by_sql, get_profile_by_userid
 
 # 定义蓝图，而不是 Flask 实例
 wechat_bp = Blueprint('wechat', __name__, url_prefix='/api/wechat')
@@ -40,7 +40,11 @@ def code_to_openid(code: str) -> dict:
         insert_data_by_sql(insert_auth_sql)
         return { "user_id": user_id }
     else:
-        return dict(result[0])
+        profile_row = get_profile_by_userid(result[0][0])[0]
+        profile = dict(profile_row)
+        profile["user_id"] = profile["id"]
+
+        return profile
 
 
 @wechat_bp.route('/login', methods=['POST'])

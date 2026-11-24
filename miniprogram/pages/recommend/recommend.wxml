@@ -63,10 +63,6 @@
                 </view>
                 <view class="info-grid">
                     <view class="info-item">
-                        <text class="info-label">身高</text>
-                        <text class="info-value">{{current.height}} cm</text>
-                    </view>
-                    <view class="info-item">
                         <text class="info-label">学历</text>
                         <text class="info-value">{{current.educationText}}</text>
                     </view>

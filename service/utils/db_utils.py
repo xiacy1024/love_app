@@ -36,3 +36,7 @@ def load_csv_to_db(csv_path, table_name, column_cnt, column_list = []):
                 cursor.executemany(f"INSERT INTO {table_name} VALUES ({', '.join(['?']*column_cnt)})", rows)
             else:
                 cursor.executemany(f"INSERT INTO {table_name} ({', '.join(column_list)}) VALUES ({', '.join(['?'] * column_cnt)})", rows)
+
+def get_profile_by_userid(user_id):
+    rows = execute_sql("select * from user_profile where id = ?", (user_id,))
+    return rows

@@ -24,6 +24,23 @@ const INCOMES = [
     { value: 5, text: '50k 以上' }
 ];
 
+function getFormData() {
+  const profile = wx.getStorageSync("profile")
+  return {
+    user_id: profile.user_id,
+    image_url: 'image_url' in profile ? profile.image_url : '',
+    name: 'name' in profile ? profile.name : '',
+    birthday: 'birthday' in profile ? profile.birthday : '2000-01-01',
+    current_city: 'current_city' in profile ? profile.current_city : '',
+    education: 'education' in profile ? profile.education : 1,
+    gender: 'gender' in profile ? profile.gender : 1,
+    income: 'income' in profile ? profile.income : 1,
+    job: 'job' in profile ? profile.job : '',
+    school: 'school' in profile ? profile.school : '',
+    self_intro: 'self_intro' in profile ? profile.self_intro : ''
+};
+}
+
 function emptyForm() {
     return {
         user_id: wx.getStorageSync("user_id"),
@@ -59,7 +76,7 @@ const pageOptions = {
     data: {
         loggedIn: false,
         showLogin: false,
-        form: emptyForm(),
+        form: getFormData(),
         genderOptions: GENDERS,
         educationOptions: EDUCATIONS,
         incomeOptions: INCOMES,
@@ -85,7 +102,7 @@ const pageOptions = {
         const loggedIn = auth.isLoggedIn();
         this.setData({ loggedIn: loggedIn, userId: auth.getUserId() });
         if (loggedIn) {
-            if (!this.data.profileLoaded) this.loadProfile();
+            // if (!this.data.profileLoaded) this.loadProfile();
         } else {
             this.setData({ showLogin: true });
         }
@@ -115,7 +132,7 @@ const pageOptions = {
     },
 
     afterLogin: function () {
-        this.loadProfile();
+        //this.loadProfile();
     },
 
     afterCloseLogin: function () {

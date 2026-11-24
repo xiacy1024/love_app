@@ -47,12 +47,6 @@
             </picker>
 
             <view class="field-row">
-                <text class="field-label">身高</text>
-                <input class="field-input" type="number" value="{{form.height}}" data-field="height" bindinput="onFieldInput" placeholder="例如 178" />
-                <text class="unit">cm</text>
-            </view>
-
-            <view class="field-row">
                 <text class="field-label">所在城市</text>
                 <input class="field-input" value="{{form.current_city}}" data-field="current_city" bindinput="onFieldInput" placeholder="例如 合肥" />
             </view>
