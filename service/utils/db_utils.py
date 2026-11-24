@@ -14,6 +14,14 @@ def execute_sql(sql, params=()):
             cur = conn.execute(sql, params)
             return cur.fetchall()
 
+def insert_data_by_sql(sql):
+    with closing(get_conn()) as conn:  # closing 保证连接关闭
+        with conn:  # with 管理事务：正常 commit，异常 rollback
+            cursor = conn.cursor()
+            cursor.execute(sql)
+    return cursor.lastrowid
+
+
 def load_csv_to_db(csv_path, table_name, column_cnt, column_list = []):
     import csv
     with open(csv_path, "r", encoding="utf-8") as f:
