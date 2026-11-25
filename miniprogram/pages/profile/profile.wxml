@@ -15,7 +15,7 @@
         <view class="form-card">
             <view class="photo-row" bindtap="chooseImage">
                 <view class="photo-box">
-                    <image wx:if="{{form.image_url}}" class="photo-preview" src="{{form.image_url}}" mode="aspectFill"></image>
+                    <image wx:if="{{form.image_url}}" class="photo-preview" src="{{imageBaseUrl + form.image_url}}" mode="aspectFill"></image>
                     <text wx:else class="photo-plus">＋</text>
                 </view>
                 <view class="photo-tip">

@@ -101,7 +101,7 @@ const pageOptions = {
 
     onShow: function () {
         // 从资料页返回时刷新登录态展示，并同步 user_id 供后续调用
-        this.setData({ loggedIn: auth.isLoggedIn(), userId: auth.getUserId() });
+        this.setData({ loggedIn: auth.isLoggedIn()});
         tabBar.sync(this, 0);
     },
 

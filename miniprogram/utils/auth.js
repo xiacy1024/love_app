@@ -1,13 +1,8 @@
 const api = require('./api');
-
-const USER_ID_KEY = 'user_id';
-
-function getUserId() {
-    return wx.getStorageSync(USER_ID_KEY);
-}
+const LOGGED_IN_KEY = "logged_in"
 
 function isLoggedIn() {
-    return !!getUserId();
+    return wx.getStorageSync(LOGGED_IN_KEY, 0);
 }
 
 function exchange(code) {
@@ -16,7 +11,6 @@ function exchange(code) {
         if (userId === undefined || userId === null || userId === '') {
             throw new Error('登录接口未返回 user_id');
         }
-        wx.setStorageSync(USER_ID_KEY, userId);
         wx.setStorageSync("profile", data)
         return data;
     });
@@ -36,6 +30,7 @@ function login() {
                     return;
                 }
                 exchange(code).then(resolve).catch(reject);
+                wx.setStorageSync(LOGGED_IN_KEY, 1);
             },
             fail: function () {
                 if (!api.API_BASE_URL) {
@@ -49,13 +44,11 @@ function login() {
 }
 
 function logout() {
-    wx.removeStorageSync(USER_ID_KEY);
+    wx.setStorageSync(LOGGED_IN_KEY, 0);
 }
 
 module.exports = {
     isLoggedIn: isLoggedIn,
     login: login,
-    logout: logout,
-    getUserId: getUserId,
-    USER_ID_KEY: USER_ID_KEY
+    logout: logout
 };

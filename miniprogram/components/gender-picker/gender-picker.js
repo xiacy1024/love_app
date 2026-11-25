@@ -16,8 +16,8 @@ Component({
     },
     data: {
         options: [
-            { value: 2, label: '男生', glyph: '♂', desc: '看看男生们' },
-            { value: 1, label: '女生', glyph: '♀', desc: '看看女生们' }
+            { value: 1, label: '男生', glyph: '♂', desc: '看看男生们' },
+            { value: 2, label: '女生', glyph: '♀', desc: '看看女生们' }
         ]
     },
     methods: {

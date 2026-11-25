@@ -4,21 +4,20 @@
 // 3. 本地 http://localhost 联调需要开发者工具关闭域名校验（本项目已设置 urlCheck: false）。
 // 4. 真机预览 / 体验版 / 正式版必须改成已备案的 HTTPS 域名，并在小程序后台配置合法域名。
 // 各接口路径在 ENDPOINTS 中单独配置：
+//'http://192.168.50.23:8000/api' 
+// http://192.168.71.83:8000/api
 
-// 手机调试时不能写 localhost：那指向手机自己。请填电脑在当前 WiFi 下的局域网 IP。
-// 同时后端要以 0.0.0.0 启动（例如 flask run --host=0.0.0.0 --port=8000），否则手机连不上。
-const API_BASE_URL = 'http://192.168.50.23:8000/api';
+const { API_BASE_URL, IMAGE_BASE_URL } = require('../../utils/config');
+
+PROFILE_KEY = "profile"
 
 const ENDPOINTS = {
     recommend: '/get_user_profile',
     reaction: '/recommend/reaction',
     login: '/wechat/login',
     profile: '/profile',
-    upload: '/upload'
+    upload: '/upload_image'
 };
-
-const USER_ID_KEY = 'user_id';
-const PROFILE_KEY = 'mock_my_profile';
 
 const MOCK_CANDIDATES = require("./mock_data").MOCK_CANDIDATES
 
@@ -58,9 +57,10 @@ function requestJson(path, method, data, mockValue) {
 
 module.exports = {
     API_BASE_URL: API_BASE_URL,
+    IMAGE_BASE_URL: IMAGE_BASE_URL,
 
     getRecommendations: function (gender) {
-        // 男=2，女=1；未传时默认按男处理，保证 URL 始终带 gender 参数
+        // 男=1，女=2；未传时默认按男处理，保证 URL 始终带 gender 参数
         const value = gender === 1 ? 1 : 2;
         const mockList = MOCK_CANDIDATES.filter(function (item) {
             return item.gender === value;

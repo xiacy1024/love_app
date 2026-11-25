@@ -66,7 +66,8 @@ const pageOptions = {
         maxDate: todayString(),
         errorText: '',
         saving: false,
-        profileLoaded: false
+        profileLoaded: false,
+        imageBaseUrl: api.IMAGE_BASE_URL,
     },
 
     onShow: function () {
@@ -76,7 +77,7 @@ const pageOptions = {
 
     refreshAuth: function () {
         const loggedIn = auth.isLoggedIn();
-        this.setData({ loggedIn: loggedIn, userId: auth.getUserId() });
+        this.setData({ loggedIn: loggedIn });
         if (loggedIn) {
             // if (!this.data.profileLoaded) this.loadProfile();
         } else {
@@ -150,7 +151,8 @@ const pageOptions = {
                 wx.showLoading({ title: '上传中' });
                 api.uploadImage(file.tempFilePath).then(function (data) {
                     wx.hideLoading();
-                    const url = (data && (data.url || data.image_url)) || file.tempFilePath;
+                    //const url = (data && (data.url || data.image_url)) || file.tempFilePath;
+                    const url = data && (data.url || data.image_url);
                     self.setField('image_url', url);
                 }).catch(function () {
                     wx.hideLoading();
