@@ -36,7 +36,7 @@
     <block wx:elif="{{current}}">
         <view class="candidate-card {{switchClass}}">
             <view class="photo-wrap">
-                <image wx:if="{{current.image_url}}" class="photo" src="{{current.image_url}}" mode="aspectFill"></image>
+                <image wx:if="{{current.image_url}}" class="photo" src="{{imageBaseUrl + current.image_url}}" mode="aspectFill"></image>
                 <view wx:else class="photo photo-placeholder">
                     <view class="placeholder-circle"></view>
                     <text class="placeholder-initial">{{current.initial}}</text>

@@ -61,7 +61,8 @@ const pageOptions = {
         preferredGender: 0,
         preferenceText: '',
         showGenderPicker: false,
-        genderRequired: false
+        genderRequired: false,
+        imageBaseUrl: api.IMAGE_BASE_URL,
     },
 
     onLoad: function () {

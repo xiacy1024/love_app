@@ -38,31 +38,7 @@ function getFormData() {
     job: 'job' in profile ? profile.job : '',
     school: 'school' in profile ? profile.school : '',
     self_intro: 'self_intro' in profile ? profile.self_intro : ''
-};
-}
-
-function emptyForm() {
-    return {
-        user_id: wx.getStorageSync("user_id"),
-        image_url: '',
-        name: '',
-        birthday: '2000-01-01',
-        current_city: '',
-        education: '',
-        gender: 1,
-        height: '',
-        income: 0,
-        job: '',
-        school: '',
-        self_intro: '',
     };
-}
-
-function indexOfValue(options, value) {
-    for (let i = 0; i < options.length; i++) {
-        if (String(options[i].value) === String(value)) return i;
-    }
-    return 0;
 }
 
 function todayString() {
@@ -106,25 +82,6 @@ const pageOptions = {
         } else {
             this.setData({ showLogin: true });
         }
-    },
-
-    loadProfile: function () {
-        const self = this;
-        api.getProfile().then(function (data) {
-            if (!data) return;
-            const form = Object.assign(emptyForm(), data);
-            self.setData({
-                form: form,
-                genderIndex: indexOfValue(GENDERS, form.gender),
-                educationIndex: indexOfValue(EDUCATIONS, form.education),
-                incomeIndex: indexOfValue(INCOMES, form.income),
-                genderText: GENDERS[indexOfValue(GENDERS, form.gender)].text,
-                educationText: EDUCATIONS[indexOfValue(EDUCATIONS, form.education)].text,
-                incomeText: INCOMES[indexOfValue(INCOMES, form.income)].text,
-                vipChecked: !!form.vip && form.vip !== '0',
-                profileLoaded: true
-            });
-        }).catch(function () {});
     },
 
     openLogin: function () {

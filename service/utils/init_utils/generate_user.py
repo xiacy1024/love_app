@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-随机生成 user_profile 表测试数据：2000 条男（gender=1）+ 2000 条女（gender=2），共 4000 行，输出 CSV。
 
 字段顺序严格对齐建表语句：
     id, gender, name, birthday, height, education, school, job,
@@ -26,8 +25,8 @@ import pandas as pd
 
 # ---------------- 配置 ----------------
 SEED = 2026                      # 固定随机种子，保证每次生成结果可复现
-MALE_N = 2000                    # 男生条数
-FEMALE_N = 2000                  # 女生条数
+MALE_N = 60                  # 男生条数
+FEMALE_N = 200                  # 女生条数
 ADD_AGE_COLUMN = False           # True 时额外输出 age 列（方便人工核对，导入前需删掉该列）
 
 MIN_AGE, MAX_AGE = 18, 35
@@ -35,35 +34,6 @@ MIN_AGE, MAX_AGE = 18, 35
 # 出生日期基准：用脚本运行当天，保证任何时间跑出来的年龄都真的落在 18~35
 TODAY = date.today()
 
-# ---------------- 昵称词库 ----------------
-MALE_PREFIX = [
-    "山野", "晚风", "老街", "拾光", "南巷", "北岛", "青衫", "孤舟", "旧梦", "长风",
-    "星河", "亦寒", "子墨", "半盏", "清酒", "野鹤", "临渊", "听雨", "折枝", "不语",
-    "归途", "柚屿", "鹿鸣", "竹里", "月下", "暮云", "轻尘", "墨白", "松间", "杳然",
-    "渭城", "孤鸿", "寒山", "石桥", "白桦", "飞鸟", "远方", "深巷", "木棉", "岩上",
-    "雾里", "岛歌", "江声", "山岚", "林间", "松风", "砾川", "渡口", "长夜", "半山",
-]
-MALE_SUFFIX = [
-    "少年", "先生", "旅人", "过客", "小七", "与鹿", "行歌", "不归", "同学", "夜行",
-    "的风", "不眠", "饮茶", "向南", "在野", "未晚", "的猫", "看海", "等风", "半醒",
-    "提笔", "赶路", "逐光", "入梦", "待雪", "煮酒", "骑鲸", "踏浪", "种树", "拾荒",
-    "走马", "观星", "牧云", "枕河", "拂衣", "折柳", "望山", "涉川", "问竹", "守灯",
-    "煮茶", "温酒", "闭户", "读书", "扫叶", "收麦", "看山", "听泉", "过桥", "夜里",
-]
-FEMALE_PREFIX = [
-    "半糖", "晚柠", "软糖", "小鹿", "云朵", "甜柚", "桃桃", "喵呜", "轻语", "星野",
-    "南栀", "拾月", "温言", "梨落", "木木", "苏苏", "浅浅", "月半", "白桃", "青柠",
-    "糯米", "布丁", "奶油", "樱桃", "猫咪", "小满", "芋圆", "珍珠", "抹茶", "橘子",
-    "葡萄", "莓莓", "小熊", "兔兔", "奶糖", "棉花", "气泡", "奶酪", "山楂", "桂花",
-    "柚子", "栗子", "麦芽", "薄荷", "话梅", "杏子", "松饼", "蛋挞", "雪梨", "酒酿",
-]
-FEMALE_SUFFIX = [
-    "不加冰", "小姐", "同学", "日记", "小铺", "与猫", "的糖", "心事", "不打烊", "很甜",
-    "呀", "酱", "寄信", "看云", "等雨", "收信", "的梦", "小记", "慢慢", "微微",
-    "软软", "甜甜", "恰饭", "赖床", "发呆", "散步", "种草", "追星", "画画", "听歌",
-    "烘焙", "撸猫", "晒太阳", "数星星", "吹泡泡", "爱吃", "很乖", "偷偷", "悄悄", "轻轻",
-    "每天", "一直", "有点甜", "超甜", "好饿", "赖皮", "观察员", "打工", "在逃", "不加班",
-]
 
 # ---------------- 其他词库 ----------------
 SCHOOLS = [
@@ -126,6 +96,22 @@ NULL_VIP = 0.25
 EDU_WEIGHTS = [6, 22, 46, 20, 6]        # 1 高中以下 / 2 大专 / 3 本科 / 4 硕士 / 5 博士
 INCOME_WEIGHTS = [15, 35, 35, 15]       # 1 5000以下 / 2 5000-1万 / 3 1万-3万 / 4 3万-10万
 
+import os
+
+def get_image_list():
+    female_image_list = os.listdir("../../../work/images/female")
+    male_image_list = os.listdir("../../../work/images/male")
+    other_image_list = os.listdir("../../../work/images/others")
+    other_random = [random.random() for _ in range(len(other_image_list))]
+    female_image_cnt, male_image_cnt = len(female_image_list), len(male_image_list)
+    split_rand = female_image_cnt * 1.0 / (female_image_cnt + male_image_cnt)
+    female_image_list.extend([ other_image_list[idx] for idx, rand in enumerate(other_random) if rand < split_rand ])
+    male_image_list.extend([ other_image_list[idx] for idx, rand in enumerate(other_random) if rand > split_rand ])
+    female_image_list.extend([ None ] * int(len(female_image_list)/10))
+    male_image_list.extend([ None ] * int(len(male_image_list)/10))
+    random.shuffle(female_image_list)
+    random.shuffle(male_image_list)
+    return { 1: male_image_list, 2: female_image_list }
 
 def random_birthday(today=TODAY):
     """返回 (周岁, 'YYYY-MM-DD')，保证周岁落在 [MIN_AGE, MAX_AGE]。"""
@@ -144,18 +130,19 @@ def random_birthday(today=TODAY):
             return actual, birth.isoformat()
     raise RuntimeError("生日生成失败：重试 500 次仍未落到合法区间")
 
+def get_image_url(other_list, gender_list):
+    image_random = random.random()
+    if image_random < 0.1:
+        image_url = other_list[-1]
+        other_list = other_list[:-1]
+    elif image_random < 0.9:
+        image_url = gender_list
+        gender_list = gender_list[:-1]
+    else:
+        image_url = None
+    return image_url, other_list, gender_list
 
-def build_nicknames(prefixes, suffixes, count, used=None):
-    """从前缀×后缀的组合池里无重复抽 count 个昵称。"""
-    pool = ["".join(p) for p in itertools.product(prefixes, suffixes)]
-    if used:
-        pool = [n for n in pool if n not in used]
-    if len(pool) < count:
-        raise ValueError(f"昵称组合池只有 {len(pool)} 个，不够 {count} 条")
-    return random.sample(pool, count)
-
-
-def make_rows(gender_code, n, nicknames, intro_pool):
+def make_rows(gender_code, n, nicknames, intro_pool, image_list):
     """生成 n 行记录（dict 列表），顺序即建表字段顺序。"""
     rows = []
     for idx in range(n):
@@ -191,10 +178,7 @@ def make_rows(gender_code, n, nicknames, intro_pool):
 
         intro = None if random.random() < NULL_INTRO else random.choice(intro_pool)
 
-        if random.random() < NULL_VIP:
-            vip = None
-        else:
-            vip = random.choices([0, 1], weights=[70, 30], k=1)[0]
+        image_url = image_list[idx] if idx < len(image_list) else None
 
         rows.append({
             "id": idx + 1,              # 占位，由 SQLite AUTOINCREMENT 覆盖，导入前可删
@@ -207,10 +191,10 @@ def make_rows(gender_code, n, nicknames, intro_pool):
             "job": job,
             "income": income,
             "current_city": city,
-            "image_url": None,
             "self_intro": intro,
             "vip": None,
             "recommend_score": random.random(),
+            "image_url": image_url
         })
     return rows
 
@@ -373,14 +357,15 @@ def generate_name_list(gender):
 def generate_user_profile(user_profile_path):
     random.seed(SEED)
 
-    # male_names = build_nicknames(MALE_PREFIX, MALE_SUFFIX, MALE_N)
-    # female_names = build_nicknames(FEMALE_PREFIX, FEMALE_SUFFIX, FEMALE_N, used=set(male_names))
-
     male_names = generate_name_list(1)
     female_names = generate_name_list(2)
 
-    male_rows = make_rows(1, MALE_N, male_names, INTRO_MALE)
-    female_rows = make_rows(2, FEMALE_N, female_names, INTRO_FEMALE)
+    image_list_dic = get_image_list()
+    print(image_list_dic)
+    male_rows = make_rows(1, MALE_N, male_names, INTRO_MALE, image_list_dic[1])
+    female_rows = make_rows(2, FEMALE_N, female_names, INTRO_FEMALE, image_list_dic[2])
+
+
 
     all_rows = male_rows + female_rows
     random.shuffle(all_rows)                 # 打乱男女顺序，避免 CSV 前 2000 行全是男生

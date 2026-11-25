@@ -1,12 +1,12 @@
 
-from utils.db_utils import execute_sql
+from utils.db_utils import execute_sql, personal_tag_list, hobby_tag_list
 
 create_user_sql = """
     CREATE TABLE IF NOT EXISTS user_profile(
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
         gender        INTEGER NOT NULL default 1,  -- 1 男 2 女
         name          TEXT,
-        birthday       TEXT    NOT NULL default '2000-01-01',
+        birthday      TEXT    NOT NULL default '2000-01-01',
         height        INTEGER,
         education     INTEGER,    -- 1 高中以下  2 大专  3 本科  4 硕士  5 博士
         school        text,     
@@ -29,6 +29,21 @@ create_tab_sql = """
     )
 """
 
+create_tab_personality_sql = """
+    CREATE TABLE IF NOT EXISTS user_tag_personality(
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id       INTEGER NOT NULL,
+        score         float
+    )
+"""
+
+create_tab_hobby_sql = """
+    CREATE TABLE IF NOT EXISTS user_tag_hobby(
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id       INTEGER NOT NULL
+    )
+"""
+
 create_auth_wechat_sql = """
     CREATE TABLE IF NOT EXISTS auth_wechat(
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,6 +59,20 @@ create_auth_wechat_index_sql = """
 
 def init_create_table():
     execute_sql(create_user_sql)
-    execute_sql(create_tab_sql)
+    #execute_sql(create_tab_sql)
+    execute_sql(create_tab_personality_sql)
+    personality_column_info = execute_sql("PRAGMA table_info(user_tag_personality)")
+    personality_column_list = [ row[1] for row in personality_column_info]
+    for tag in personal_tag_list:
+        if tag in personality_column_list:
+            continue
+        execute_sql(f""" ALTER TABLE user_tag_personality ADD COLUMN {tag} integer """)
+    execute_sql(create_tab_hobby_sql)
+    hobby_column_info = execute_sql("PRAGMA table_info(user_tag_hobby)")
+    hobby_column_list = [row[1] for row in hobby_column_info]
+    for tag in hobby_tag_list:
+        if tag in hobby_column_list:
+            continue
+        execute_sql(f""" ALTER TABLE user_tag_hobby ADD COLUMN {tag} integer """)
     execute_sql(create_auth_wechat_sql)
     execute_sql(create_auth_wechat_index_sql)
