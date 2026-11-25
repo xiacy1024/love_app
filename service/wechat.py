@@ -42,6 +42,7 @@ def code_to_openid(code: str) -> dict:
     else:
         profile_row = get_profile_by_userid(result[0][0])[0]
         profile = dict(profile_row)
+        print(profile)
         profile["user_id"] = profile["id"]
 
         return profile

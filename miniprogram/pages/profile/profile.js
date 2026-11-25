@@ -1,11 +1,12 @@
+const { API_BASE_URL, IMAGE_BASE_URL, PROFILE_KEY } = require('../../utils/config');
 const api = require('../../utils/api');
 const auth = require('../../utils/auth');
 const loginBehavior = require('../../utils/login-behavior');
 const tabBar = require('../../utils/tab-bar');
 
 const GENDERS = [
-    { value: 2, text: '男' },
-    { value: 1, text: '女' }
+    { value: 1, text: '男' },
+    { value: 2, text: '女' }
 ];
 
 const EDUCATIONS = [
@@ -25,9 +26,9 @@ const INCOMES = [
 ];
 
 function getFormData() {
-  const profile = wx.getStorageSync("profile")
+  const profile = wx.getStorageSync(PROFILE_KEY) || {}
   return {
-    user_id: profile.user_id,
+    user_id: 'user_id' in profile ? profile.user_id : 0,
     image_url: 'image_url' in profile ? profile.image_url : '',
     name: 'name' in profile ? profile.name : '',
     birthday: 'birthday' in profile ? profile.birthday : '2000-01-01',
@@ -67,7 +68,7 @@ const pageOptions = {
         errorText: '',
         saving: false,
         profileLoaded: false,
-        imageBaseUrl: api.IMAGE_BASE_URL,
+        imageBaseUrl: IMAGE_BASE_URL,
     },
 
     onShow: function () {
@@ -75,6 +76,27 @@ const pageOptions = {
         tabBar.sync(this, 1);
     },
 
+    reloadForm: function () {
+      const form = getFormData();
+      const patch = { form: form, errorText: '' };
+      // 同步三个 picker 的派生字段
+      for (let i = 0; i < GENDERS.length; i++) {
+          if (GENDERS[i].value === form.gender) {
+              patch.genderIndex = i; patch.genderText = GENDERS[i].text;
+          }
+      }
+      for (let i = 0; i < EDUCATIONS.length; i++) {
+          if (EDUCATIONS[i].value === form.education) {
+              patch.genderIndex = i; patch.genderText = EDUCATIONS[i].text;
+          }
+      }
+      for (let i = 0; i < INCOMES.length; i++) {
+        if (INCOMES[i].value === form.income) {
+            patch.genderIndex = i; patch.genderText = INCOMES[i].text;
+        }
+    }
+      this.setData(patch);
+    },
     refreshAuth: function () {
         const loggedIn = auth.isLoggedIn();
         this.setData({ loggedIn: loggedIn });
@@ -91,6 +113,7 @@ const pageOptions = {
 
     afterLogin: function () {
         //this.loadProfile();
+        this.reloadForm()
     },
 
     afterCloseLogin: function () {
@@ -176,6 +199,7 @@ const pageOptions = {
             wx.hideLoading();
             self.setData({ saving: false });
             wx.showToast({ title: '保存成功', icon: 'success' });
+            wx.setStorageSync(PROFILE_KEY, form);
         }).catch(function () {
             wx.hideLoading();
             self.setData({ saving: false });

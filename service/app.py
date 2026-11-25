@@ -26,7 +26,7 @@ def set_profile():
         value = body[key]
         if not value:
             continue
-        if key in ["name", "birthday", "current_city", "job", "school", "self_intro"]:
+        if key in ["name", "birthday", "current_city", "job", "school", "self_intro", "image_url"]:
             update_stmt_list.append("%s = '%s'" % (key, value))
         elif key in ['gender', 'education', 'height', 'income']:
             update_stmt_list.append("%s = %d" % (key, value))

@@ -1,3 +1,4 @@
+const { API_BASE_URL, IMAGE_BASE_URL, PROFILE_KEY } = require('../../utils/config');
 const api = require('../../utils/api');
 const auth = require('../../utils/auth');
 const preference = require('../../utils/preference');
@@ -62,7 +63,7 @@ const pageOptions = {
         preferenceText: '',
         showGenderPicker: false,
         genderRequired: false,
-        imageBaseUrl: api.IMAGE_BASE_URL,
+        imageBaseUrl: IMAGE_BASE_URL,
     },
 
     onLoad: function () {
