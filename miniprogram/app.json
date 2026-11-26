@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/recommend/recommend",
+    "pages/like/like",
     "pages/profile/profile"
   ],
   "window": {
@@ -20,6 +21,10 @@
       {
         "pagePath": "pages/recommend/recommend",
         "text": "推荐"
+      },
+      {
+        "pagePath": "pages/like/like",
+        "text": "喜欢"
       },
       {
         "pagePath": "pages/profile/profile",

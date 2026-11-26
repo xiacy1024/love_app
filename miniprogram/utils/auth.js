@@ -39,6 +39,7 @@ function logout() {
     wx.setStorageSync(LOGGED_IN_KEY, 0);
 }
 
+
 module.exports = {
     isLoggedIn: isLoggedIn,
     login: login,
