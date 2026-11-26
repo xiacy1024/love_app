@@ -188,11 +188,11 @@ const pageOptions = {
     },
 
     handleLike: function () {
-        this.react('like');
+        this.react(1);
     },
 
     handleDislike: function () {
-        this.react('dislike');
+        this.react(0);
     },
 
     react: function (action) {
@@ -200,8 +200,11 @@ const pageOptions = {
         if (!candidate) return;
         const self = this;
         this.ensureAuth(function () {
-            api.sendReaction({ id: candidate.id, action: action }).then(function () {
-                wx.showToast({ title: action === 'like' ? '已喜欢' : '已跳过', icon: 'success' });
+            api.sendReaction({ 
+              sender_id: wx.getStorageSync(PROFILE_KEY).user_id, 
+              receiver_id: candidate.id, 
+              action: action }).then(function () {
+                wx.showToast({ title: action === 1 ? '已喜欢' : '已跳过', icon: 'success' });
                 self.nextCandidate();
             }).catch(function () {
                 wx.showToast({ title: '提交失败，请重试', icon: 'none' });

@@ -1,6 +1,7 @@
 
 from flask import Flask, jsonify, request
 from base_utils import *
+from db_utils import insert_data_by_sql
 from utils.db_utils import execute_sql
 from wechat import wechat_bp
 
@@ -77,6 +78,17 @@ def upload_image():
         ExtraArgs={"ContentType": f.mimetype})
     print(file_name)
     return jsonify({"image_url": file_name})
+
+@app.route('/api/recommend/reaction', methods=['POST'])
+def set_action():
+    body = request.get_json()
+    sender_id = body.get("sender_id")
+    receiver_id = body.get("receiver_id")
+    action = body.get("action")
+    insert_sql = f""" insert into user_action_log(sender_id, receiver_id, action) values ({sender_id}, {receiver_id}, {action})"""
+    insert_data_by_sql(insert_sql)
+
+    return jsonify({"status": "success"})
 
 if __name__ == '__main__':
     app.register_blueprint(wechat_bp)

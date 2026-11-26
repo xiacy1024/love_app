@@ -44,6 +44,16 @@ create_tab_hobby_sql = """
     )
 """
 
+create_action_sql = """
+    CREATE TABLE IF NOT EXISTS user_action_log(
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        sender_id     INTEGER NOT NULL,
+        receiver_id   INTEGER NOT NULL,
+        action        INTEGER NOT NULL, -- 1 赞  0 不喜欢
+        time          TEXT DEFAULT (datetime('now', 'localtime'))
+    )
+"""
+
 create_auth_wechat_sql = """
     CREATE TABLE IF NOT EXISTS auth_wechat(
         id            INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -74,5 +84,6 @@ def init_create_table():
         if tag in hobby_column_list:
             continue
         execute_sql(f""" ALTER TABLE user_tag_hobby ADD COLUMN {tag} integer """)
+    execute_sql(create_action_sql)
     execute_sql(create_auth_wechat_sql)
     execute_sql(create_auth_wechat_index_sql)
