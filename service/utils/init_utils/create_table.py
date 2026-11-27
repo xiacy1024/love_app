@@ -50,7 +50,17 @@ create_action_sql = """
         sender_id     INTEGER NOT NULL,
         receiver_id   INTEGER NOT NULL,
         action        INTEGER NOT NULL, -- 1 赞  0 不喜欢
-        time          TEXT DEFAULT (datetime('now', 'localtime'))
+        create_time   TEXT DEFAULT (datetime('now', 'localtime'))
+    )
+"""
+
+create_chat_sql = """
+    CREATE TABLE IF NOT EXISTS user_chat_log(
+        id            INTEGER PRIMARY KEY AUTOINCREMENT,
+        sender_id     INTEGER NOT NULL,
+        receiver_id   INTEGER NOT NULL,
+        content       TEXT NOT NULL, -- 1 赞  0 不喜欢
+        create_time   TEXT DEFAULT (datetime('now', 'localtime'))
     )
 """
 
@@ -85,5 +95,6 @@ def init_create_table():
             continue
         execute_sql(f""" ALTER TABLE user_tag_hobby ADD COLUMN {tag} integer """)
     execute_sql(create_action_sql)
+    execute_sql(create_chat_sql)
     execute_sql(create_auth_wechat_sql)
     execute_sql(create_auth_wechat_index_sql)

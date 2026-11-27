@@ -1,3 +1,117 @@
-<view class="page" bindtouchstart="onTouchStart" bindtouchend="onTouchEnd">
-  <login-sheet show="{{showLogin}}" bind:login="handleLogin" bind:close="closeLogin"></login-sheet>
+<view class="page">
+    <login-sheet show="{{showLogin}}" bind:login="handleLogin" bind:close="closeLogin"></login-sheet>
+
+    <block wx:if="{{loggedIn}}">
+        <view class="page-head">
+            <text class="page-title">我喜欢的</text>
+            <text class="page-sub">点按头像查看资料，发起对话查看历史消息</text>
+        </view>
+
+        <view wx:if="{{viewState === 'loading'}}" class="state-card">
+            <view class="spinner"></view>
+            <text class="state-title">加载中…</text>
+        </view>
+
+        <view wx:elif="{{viewState === 'error'}}" class="state-card">
+            <text class="state-icon">!</text>
+            <text class="state-title">加载失败</text>
+            <text class="state-description">请稍后重试</text>
+            <view class="state-button" bindtap="onRetry">重新加载</view>
+        </view>
+
+        <view wx:elif="{{viewState === 'empty'}}" class="state-card">
+            <text class="state-icon">♡</text>
+            <text class="state-title">还没有喜欢的人</text>
+            <text class="state-description">去推荐页发现心动的人吧</text>
+        </view>
+
+        <view wx:elif="{{viewState === 'ready'}}" class="grid">
+            <view class="card"
+                wx:for="{{list}}"
+                wx:key="id"
+                data-id="{{item.id}}"
+                hover-class="card-hover"
+                bindlongpress="onCardEnter"
+                bindtap="onCardEnter">
+
+                <view class="thumb-wrap">
+                    <image wx:if="{{item.image_url}}" class="thumb" src="{{imageBaseUrl + item.image_url}}" mode="aspectFill"></image>
+                    <view wx:else class="thumb thumb-placeholder">
+                        <text class="thumb-initial">{{item.initial}}</text>
+                    </view>
+                </view>
+
+                <text class="card-name">{{item.name || '匿名'}}</text>
+                <text class="card-gender {{item.gender === 1 ? 'gender-male' : 'gender-female'}}">{{item.genderText}}</text>
+
+                <view class="chat-btn" data-id="{{item.id}}" catchtap="openChat">发起对话</view>
+
+                <!-- 点按 / 长按卡片时浮层展示完整资料 -->
+                <view wx:if="{{activeId === item.id}}" class="detail-pop" catchtap="onCardLeave">
+                    <view class="detail-head">
+                        <text class="detail-name">{{item.name || '匿名'}}</text>
+                        <text class="detail-gender">{{item.genderText}} · {{item.ageText}}</text>
+                    </view>
+                    <view class="detail-line"><text class="detail-label">城市</text><text class="detail-value">{{item.current_city || '保密'}}</text></view>
+                    <view class="detail-line"><text class="detail-label">身高</text><text class="detail-value">{{item.height ? item.height + ' cm' : '保密'}}</text></view>
+                    <view class="detail-line"><text class="detail-label">学历</text><text class="detail-value">{{item.educationText}}</text></view>
+                    <view class="detail-line"><text class="detail-label">职业</text><text class="detail-value">{{item.job || '保密'}}</text></view>
+                    <view class="detail-line"><text class="detail-label">学校</text><text class="detail-value">{{item.school || '保密'}}</text></view>
+                    <view class="detail-line"><text class="detail-label">收入</text><text class="detail-value">{{item.incomeText}}</text></view>
+                    <view class="detail-intro">{{item.self_intro || '这个人很神秘，什么都没留下。'}}</view>
+                    <view class="detail-match">匹配度 {{item.matchText}}</view>
+                    <text class="detail-close">点按关闭</text>
+                </view>
+            </view>
+        </view>
+    </block>
+
+    <view wx:else class="state-card">
+        <text class="state-icon">♡</text>
+        <text class="state-title">登录后查看喜欢的人</text>
+        <text class="state-description">游客可以浏览推荐，喜欢列表需要登录后查看。</text>
+        <view class="state-button" bindtap="openLogin">立即登录</view>
+    </view>
+
+    <!-- 对话弹框 -->
+    <view wx:if="{{chatOpen}}" class="chat-mask" catchtap="closeChat">
+        <view class="chat-panel" catchtap="noop">
+            <view class="chat-head">
+                <text class="chat-title">与 {{chatUser.name || '匿名'}} 的对话</text>
+                <text class="chat-close" catchtap="closeChat">×</text>
+            </view>
+
+            <view wx:if="{{chatLoading}}" class="chat-loading">加载中…</view>
+            <view wx:elif="{{chatHistory.length === 0}}" class="chat-empty">暂无历史对话，打个招呼吧</view>
+            <view wx:else class="chat-list">
+                <view class="chat-item {{item.isSelf ? 'chat-self' : 'chat-other'}}" wx:for="{{chatHistory}}" wx:key="id">
+                    <view wx:if="{{!item.isSelf}}" class="chat-avatar" style="background: {{item.avatarColor}}">
+                        <image wx:if="{{item.avatarUrl}}" class="chat-avatar-img" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+                        <text wx:else class="chat-avatar-text">{{item.avatarInitial}}</text>
+                    </view>
+                    <view class="chat-main">
+                        <text wx:if="{{item.timeText}}" class="chat-time">{{item.timeText}}</text>
+                        <text class="chat-bubble">{{item.contentText}}</text>
+                    </view>
+                    <view wx:if="{{item.isSelf}}" class="chat-avatar" style="background: {{item.avatarColor}}">
+                        <image wx:if="{{item.avatarUrl}}" class="chat-avatar-img" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+                        <text wx:else class="chat-avatar-text">{{item.avatarInitial}}</text>
+                    </view>
+                </view>
+            </view>
+
+            <view class="chat-input-row">
+                <input
+                    class="chat-input"
+                    placeholder="说点什么…"
+                    value="{{chatInput}}"
+                    bindinput="onChatInput"
+                    bindconfirm="sendMessage"
+                    confirm-type="send"
+                    cursor-spacing="20" />
+                <view class="chat-send {{chatInput ? '' : 'chat-send-disabled'}}" catchtap="sendMessage">发送</view>
+            </view>
+            <text class="chat-tip">消息先显示在本地，发送接口对接后自动同步到服务端</text>
+        </view>
+    </view>
 </view>
