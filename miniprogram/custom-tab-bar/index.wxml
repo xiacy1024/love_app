@@ -5,7 +5,8 @@
         <view class="logout-button" bindtap="onLogout">退出</view>
     </view>
     <view class="tab-items">
-        <view wx:for="{{list}}" wx:key="pagePath" class="tab-item {{selected === index ? 'tab-active' : ''}}" data-path="{{item.pagePath}}" bindtap="onTabTap">
+        <view wx:for="{{list}}" wx:key="pagePath" class="tab-item tab-{{index}} {{selected === index ? 'tab-active' : ''}}" data-path="{{item.pagePath}}" bindtap="onTabTap">
+            <view class="tab-icon"></view>
             <text class="tab-label">{{item.text}}</text>
         </view>
     </view>

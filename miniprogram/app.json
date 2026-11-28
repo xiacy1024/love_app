@@ -2,11 +2,12 @@
   "pages": [
     "pages/recommend/recommend",
     "pages/like/like",
+    "pages/chat/chat",
     "pages/profile/profile"
   ],
   "window": {
     "navigationBarTitleText": "遇见",
-    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarBackgroundColor": "#fff6f7",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#fff6f7",
     "backgroundTextStyle": "light"
@@ -20,11 +21,15 @@
     "list": [
       {
         "pagePath": "pages/recommend/recommend",
-        "text": "推荐"
+        "text": "遇见"
       },
       {
         "pagePath": "pages/like/like",
-        "text": "喜欢"
+        "text": "心动"
+      },
+      {
+        "pagePath": "pages/chat/chat",
+        "text": "消息"
       },
       {
         "pagePath": "pages/profile/profile",

@@ -2,6 +2,7 @@
     box-sizing: border-box;
     min-height: 100vh;
     padding: 32rpx 28rpx 80rpx;
+    background: #fff6f7;
 }
 
 .page-head {
@@ -33,7 +34,7 @@
     padding: 48rpx;
     border: 2rpx solid #f6dfe4;
     border-radius: 28rpx;
-    background: #ffffff;
+    background: linear-gradient(155deg, #fffbfc 0%, #fff1f4 100%);
     text-align: center;
 }
 
@@ -81,14 +82,18 @@
 .grid {
     display: flex;
     flex-wrap: wrap;
-    margin: 0 -12rpx;
+    margin: 0;
 }
 
 .card {
     box-sizing: border-box;
     position: relative;
-    width: 33.3333%;
-    padding: 0 12rpx 28rpx;
+    width: calc(33.3333% - 16rpx);
+    margin: 0 8rpx 24rpx;
+    padding: 14rpx 14rpx 18rpx;
+    border-radius: 20rpx;
+    background: #ffffff;
+    box-shadow: 0 6rpx 20rpx rgba(120, 60, 75, 0.06);
 }
 
 .card-hover {
@@ -256,8 +261,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 20rpx;
-    border-bottom: 2rpx solid #f6f1f2;
+    margin: -32rpx -32rpx 0;
+    padding: 32rpx 32rpx 20rpx;
+    border-radius: 28rpx 28rpx 0 0;
+    background: linear-gradient(155deg, #fff3f6 0%, #ffe9f0 100%);
+    border-bottom: 2rpx solid #f5d9e1;
 }
 
 .chat-title {
@@ -282,8 +290,26 @@
 
 .chat-list {
     max-height: 52vh;
-    padding: 24rpx 0;
+    padding: 24rpx 12rpx 24rpx 0;
     overflow-y: auto;
+}
+
+.chat-list::-webkit-scrollbar {
+    width: 6rpx;
+}
+
+.chat-list::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 6rpx;
+}
+
+.chat-list::-webkit-scrollbar-thumb {
+    background: #eec3ce;
+    border-radius: 6rpx;
+}
+
+.chat-list::-webkit-scrollbar-thumb:active {
+    background: #e05a73;
 }
 
 .chat-item {
@@ -350,8 +376,8 @@
     max-width: 100%;
     padding: 16rpx 22rpx;
     border-radius: 18rpx;
-    background: #f6f1f2;
-    color: #2b2b33;
+    background: linear-gradient(155deg, #eef4fb 0%, #e2ebf7 100%);
+    color: #334155;
     font-size: 26rpx;
     line-height: 1.6;
     word-break: break-all;
@@ -367,7 +393,7 @@
     align-items: center;
     gap: 16rpx;
     padding-top: 20rpx;
-    border-top: 2rpx solid #f6f1f2;
+    border-top: 2rpx solid #f7e6ea;
 }
 
 .chat-input {
@@ -375,7 +401,8 @@
     height: 72rpx;
     padding: 0 20rpx;
     border-radius: 36rpx;
-    background: #f8f5f6;
+    background: #eaf1f9;
+    color: #334155;
     font-size: 26rpx;
 }
 

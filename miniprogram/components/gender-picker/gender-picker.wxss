@@ -15,7 +15,7 @@
     width: 100%;
     padding: 52rpx 40rpx 56rpx;
     border-radius: 36rpx 36rpx 0 0;
-    background: #ffffff;
+    background: linear-gradient(155deg, #fffbfc 0%, #fff1f4 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -64,7 +64,7 @@
     padding: 34rpx 12rpx;
     border: 2rpx solid #f0dfe3;
     border-radius: 24rpx;
-    background: #fffafb;
+    background: #fff6f8;
 }
 
 .gender-option-active {

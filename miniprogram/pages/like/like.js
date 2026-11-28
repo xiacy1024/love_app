@@ -92,7 +92,7 @@ function calcAge(birthday) {
     return age >= 0 && age < 120 ? age : -1;
 }
 
-// 与推荐页 decorate 保持一致；兼容后端返回的 bithday 拼写
+// 与遇见页 decorate 保持一致；兼容后端返回的 bithday 拼写
 function decorate(raw) {
     const birthday = raw.birthday || raw.bithday;
     const age = calcAge(birthday);

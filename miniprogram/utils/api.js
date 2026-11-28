@@ -44,9 +44,13 @@ module.exports = {
         return requestJson(ENDPOINTS.like + '?user_id=' + userId, 'GET');
     },
 
-    // 历史对话：后端待开发，先留好调用入口
+    // 历史对话：传 targetId 查两人对话；不传则查该用户所有对话记录
     getChatHistory: function (userId, targetId) {
-        return requestJson(ENDPOINTS.chatHistory + '?user_id=' + userId + '&target_id=' + targetId, 'GET');
+        let path = ENDPOINTS.chatHistory + '?user_id=' + userId;
+        if (targetId !== undefined && targetId !== null && targetId !== '') {
+            path += '&target_id=' + targetId;
+        }
+        return requestJson(path, 'GET');
     },
 
     // 发送消息：参数与后端 /api/send_message 对齐

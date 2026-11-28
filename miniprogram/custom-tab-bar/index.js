@@ -6,8 +6,9 @@ Component({
         selected: 0,
         loggedIn: false,
         list: [
-            { pagePath: '/pages/recommend/recommend', text: '推荐' },
-            { pagePath: '/pages/like/like', text: '喜欢' },
+            { pagePath: '/pages/recommend/recommend', text: '遇见' },
+            { pagePath: '/pages/like/like', text: '心动' },
+            { pagePath: '/pages/chat/chat', text: '消息' },
             { pagePath: '/pages/profile/profile', text: '我的' }
         ]
     },

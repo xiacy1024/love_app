@@ -7,7 +7,7 @@
     <view class="guest-card" wx:if="{{!loggedIn}}">
         <view class="guest-icon">♡</view>
         <text class="guest-title">登录后填写资料</text>
-        <text class="guest-desc">游客可以浏览推荐；填写资料、点赞和点踩需要先登录。</text>
+        <text class="guest-desc">游客可以浏览遇见；填写资料、点赞和点踩需要先登录。</text>
         <view class="guest-button" bindtap="openLogin">登录并开始填写</view>
     </view>
 

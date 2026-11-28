@@ -3,7 +3,7 @@
 
     <block wx:if="{{loggedIn}}">
         <view class="page-head">
-            <text class="page-title">我喜欢的</text>
+            <text class="page-title">心动的人</text>
             <text class="page-sub">点按头像查看资料，发起对话查看历史消息</text>
         </view>
 
@@ -21,8 +21,8 @@
 
         <view wx:elif="{{viewState === 'empty'}}" class="state-card">
             <text class="state-icon">♡</text>
-            <text class="state-title">还没有喜欢的人</text>
-            <text class="state-description">去推荐页发现心动的人吧</text>
+            <text class="state-title">还没有心动的人</text>
+            <text class="state-description">去遇见页发现心动的人吧</text>
         </view>
 
         <view wx:elif="{{viewState === 'ready'}}" class="grid">
@@ -68,8 +68,8 @@
 
     <view wx:else class="state-card">
         <text class="state-icon">♡</text>
-        <text class="state-title">登录后查看喜欢的人</text>
-        <text class="state-description">游客可以浏览推荐，喜欢列表需要登录后查看。</text>
+        <text class="state-title">登录后查看心动的人</text>
+        <text class="state-description">游客可以浏览遇见，心动列表需要登录后查看。</text>
         <view class="state-button" bindtap="openLogin">立即登录</view>
     </view>
 

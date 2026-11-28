@@ -73,7 +73,7 @@ const pageOptions = {
 
     onShow: function () {
         this.refreshAuth();
-        tabBar.sync(this, 1);
+        tabBar.sync(this, 3);
     },
 
     reloadForm: function () {

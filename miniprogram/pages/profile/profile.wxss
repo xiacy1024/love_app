@@ -28,7 +28,7 @@
     flex-direction: column;
     padding: 80rpx 48rpx;
     border-radius: 28rpx;
-    background: #ffffff;
+    background: linear-gradient(155deg, #fffbfc 0%, #fff1f4 100%);
     text-align: center;
 }
 
@@ -73,14 +73,14 @@
 .form-card {
     padding: 8rpx 32rpx 24rpx;
     border-radius: 28rpx;
-    background: #ffffff;
+    background: linear-gradient(155deg, #fffbfc 0%, #fff1f4 100%);
 }
 
 .photo-row {
     display: flex;
     align-items: center;
     padding: 28rpx 0;
-    border-bottom: 2rpx solid #f6f1f2;
+    border-bottom: 2rpx solid #f7e6ea;
 }
 
 .photo-box {
@@ -132,7 +132,10 @@
     display: flex;
     min-height: 100rpx;
     align-items: center;
-    border-bottom: 2rpx solid #f6f1f2;
+    border-bottom: 2rpx solid #f7e6ea;
+    background: #ffffff
+    
+    ;
 }
 
 .field-label {
@@ -179,7 +182,8 @@
     padding: 20rpx;
     box-sizing: border-box;
     border-radius: 16rpx;
-    background: #faf7f8;
+    background: #eef6f1;
+    color: #3f5c50;
     font-size: 27rpx;
     line-height: 1.7;
 }

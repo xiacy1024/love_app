@@ -110,7 +110,7 @@
     <view class="floating-actions" wx:if="{{viewState === 'ready'}}">
         <view class="action-btn action-dislike" bindtap="handleDislike">
             <text class="action-glyph">×</text>
-            <text class="action-label">不合适</text>
+            <text class="action-label">不看Ta</text>
         </view>
         <view class="action-btn action-like" bindtap="handleLike">
             <text class="action-glyph">♥</text>

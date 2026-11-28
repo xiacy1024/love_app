@@ -1,0 +1,79 @@
+<view class="page">
+    <login-sheet show="{{showLogin}}" bind:login="handleLogin" bind:close="closeLogin"></login-sheet>
+
+    <block wx:if="{{loggedIn}}">
+        <view class="page-head">
+            <text class="page-title">消息</text>
+            <text class="page-sub">点击消息查看完整对话</text>
+        </view>
+
+        <view wx:if="{{viewState === 'loading'}}" class="state-card">
+            <view class="spinner"></view>
+            <text class="state-title">加载中…</text>
+        </view>
+
+        <view wx:elif="{{viewState === 'error'}}" class="state-card">
+            <text class="state-icon">!</text>
+            <text class="state-title">加载失败</text>
+            <text class="state-description">请稍后重试</text>
+            <view class="state-button" bindtap="onRetry">重新加载</view>
+        </view>
+
+        <view wx:elif="{{viewState === 'empty'}}" class="state-card">
+            <text class="state-icon">◇</text>
+            <text class="state-title">还没有消息</text>
+            <text class="state-description">去心动的人那里发起对话吧</text>
+        </view>
+
+        <view wx:elif="{{viewState === 'ready'}}" class="session-list">
+            <view class="session-item" wx:for="{{sessions}}" wx:key="id" data-id="{{item.id}}" bindtap="openDetail">
+                <view class="session-avatar" style="background: {{item.avatarColor}}">
+                    <image wx:if="{{item.avatarUrl}}" class="session-avatar-img" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+                    <text wx:else class="session-avatar-text">{{item.avatarInitial}}</text>
+                </view>
+                <view class="session-body">
+                    <view class="session-row">
+                        <text class="session-name">{{item.name}}</text>
+                        <text class="session-time">{{item.timeText}}</text>
+                    </view>
+                    <text class="session-preview">{{item.preview || '暂无消息'}}</text>
+                </view>
+            </view>
+        </view>
+    </block>
+
+    <view wx:else class="state-card">
+        <text class="state-icon">◇</text>
+        <text class="state-title">登录后查看消息</text>
+        <text class="state-description">游客可以浏览遇见，消息列表需要登录后查看。</text>
+        <view class="state-button" bindtap="openLogin">立即登录</view>
+    </view>
+
+    <!-- 对话详情弹框 -->
+    <view wx:if="{{detailOpen}}" class="chat-mask" catchtap="closeDetail">
+        <view class="chat-panel" catchtap="noop">
+            <view class="chat-head">
+                <text class="chat-title">与 {{detailUser.name || '匿名'}} 的对话</text>
+                <text class="chat-close" catchtap="closeDetail">×</text>
+            </view>
+
+            <view wx:if="{{detailHistory.length === 0}}" class="chat-empty">暂无历史对话</view>
+            <view wx:else class="chat-list">
+                <view class="chat-item {{item.isSelf ? 'chat-self' : 'chat-other'}}" wx:for="{{detailHistory}}" wx:key="id">
+                    <view wx:if="{{!item.isSelf}}" class="chat-avatar" style="background: {{item.avatarColor}}">
+                        <image wx:if="{{item.avatarUrl}}" class="chat-avatar-img" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+                        <text wx:else class="chat-avatar-text">{{item.avatarInitial}}</text>
+                    </view>
+                    <view class="chat-main">
+                        <text wx:if="{{item.timeText}}" class="chat-time">{{item.timeText}}</text>
+                        <text class="chat-bubble">{{item.contentText}}</text>
+                    </view>
+                    <view wx:if="{{item.isSelf}}" class="chat-avatar" style="background: {{item.avatarColor}}">
+                        <image wx:if="{{item.avatarUrl}}" class="chat-avatar-img" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+                        <text wx:else class="chat-avatar-text">{{item.avatarInitial}}</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
